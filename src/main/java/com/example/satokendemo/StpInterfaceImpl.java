@@ -14,18 +14,23 @@ public class StpInterfaceImpl implements StpInterface {
     }
 
     /**
-     * satoken - 注解式鉴权 - 校验当前用户身份的impl
+     * satoken - 注解式鉴权 - 校验当前用户身份 - 具体实现
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         Integer userId = Integer.parseInt(loginId.toString());
+        List<String> list = new ArrayList<>();
         /**
-         * 根据userId获取该用户的role,放入list并返回
+         * 必看！
+         * 根据userId，从数据库获取该用户的role,放入list并返回，这里不实际连接数据库，而是做一个mock
          */
-//        String role = userMapper.getRole(userId);
-//        List<String> list = new ArrayList<>();
-//        list.add(role);
-//        return list;
-        return null;
+//      String role = userMapper.getRole(userId);
+//      list.add(role);
+
+        // 这里模拟出一个student的role
+        if(userId == 1){
+            list.add("student");
+        }
+        return list;
     }
 }

@@ -1,4 +1,5 @@
 package com.example.satokendemo;
+import cn.dev33.satoken.annotation.SaCheckRole;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.dev33.satoken.util.SaResult;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,11 +27,15 @@ public class AuthController {
     @RequestMapping("/login")
     public SaResult login(String username, String password){
         if("admin".equals(username)&&"123456".equals(password)){
+
             // 与StpInterfaceImpl中重写的方法照应
-            StpUtil.login(101);
+            StpUtil.login(1);
             Map<String,String> map = new HashMap<>();
+
+            // 获得的token就是当前登录用户的token（也就是上面的用户1）
             map.put("token", StpUtil.getTokenValue());
-            // 返回token
+
+            // 返回satoken，加与headers，"satoken":"..."
             return SaResult.data(map);
         }
         return SaResult.error("登录失败");
@@ -58,6 +63,18 @@ public class AuthController {
         else return "nothing";
     }
 
+    /**
+    * @author cola
+    * @description 注解式鉴权
+    * @date 2022/2/8
+    */
+    @RequestMapping("/getMsg")
+    @SaCheckRole("student")
+    public SaResult getMsg(){
+
+        // 测试时，先登录，拿到token后，把token放到新的请求头里作mock
+        return SaResult.ok();
+    }
     // 实例就到这吧，其余的按照文档走就行
 
 }
